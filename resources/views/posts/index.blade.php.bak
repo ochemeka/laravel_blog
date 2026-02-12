@@ -1,0 +1,163 @@
+@extends('layouts.blog')
+
+@section('content')
+<!-- Hero Section with Gradient Background -->
+<div class="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
+        <div class="text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 sm:mb-6 px-4">
+                Welcome to <span class="block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-pink-200">My Blog</span>
+            </h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-indigo-100 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
+                Discover stories, insights, and expertise from writers passionate about technology, development, and innovation.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
+                @auth
+                    <a href="{{ route('posts.create') }}" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 font-semibold rounded-full hover:bg-indigo-50 transform hover:scale-105 transition-all duration-200 shadow-xl">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Create New Post
+                    </a>
+                @else
+                    <a href="{{ route('register') }}" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 font-semibold rounded-full hover:bg-indigo-50 transform hover:scale-105 transition-all duration-200 shadow-xl">
+                        Get Started
+                    </a>
+                    <a href="{{ route('login') }}" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transform hover:scale-105 transition-all duration-200">
+                        Sign In
+                    </a>
+                @endauth
+            </div>
+        </div>
+    </div>
+
+    <!-- Wave SVG Divider -->
+    <div class="absolute bottom-0 w-full">
+        <svg class="w-full h-12 sm:h-16 md:h-20" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+        </svg>
+    </div>
+</div>
+
+<!-- Featured Stats Section -->
+<div class="bg-gray-50 py-8 sm:py-12 border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            <div class="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-shadow">
+                <div class="text-3xl sm:text-4xl font-bold text-indigo-600 mb-1 sm:mb-2">{{ $posts->total() }}</div>
+                <div class="text-sm sm:text-base text-gray-600 font-medium">Published Posts</div>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-shadow">
+                <div class="text-3xl sm:text-4xl font-bold text-purple-600 mb-1 sm:mb-2">{{ App\Models\User::count() }}</div>
+                <div class="text-sm sm:text-base text-gray-600 font-medium">Writers</div>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-shadow">
+                <div class="text-3xl sm:text-4xl font-bold text-pink-600 mb-1 sm:mb-2">{{ $posts->total() * 5 }}+</div>
+                <div class="text-sm sm:text-base text-gray-600 font-medium">Readers</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Posts Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    @if($posts->count() > 0)
+        <div class="mb-8 sm:mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">Latest Stories</h2>
+            <p class="text-base sm:text-lg text-gray-600">Fresh perspectives and insights from our community</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            @foreach($posts as $post)
+                <article class="group bg-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 sm:hover:-translate-y-2">
+                    <!-- Featured Image Placeholder with Gradient -->
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="w-12 h-12 sm:w-16 sm:h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                            </svg>
+                        </div>
+                        <!-- Category Badge -->
+                        <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
+                            <span class="px-2.5 py-1 sm:px-3 text-xs font-semibold bg-white/90 backdrop-blur-sm text-indigo-600 rounded-full">
+                                {{ ucfirst($post->status) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 sm:p-6">
+                        <!-- Author & Date -->
+                        <div class="flex items-center mb-3 sm:mb-4">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base flex-shrink-0">
+                                {{ substr($post->user->name, 0, 1) }}
+                            </div>
+                            <div class="ml-2 sm:ml-3 min-w-0">
+                                <p class="text-xs sm:text-sm font-semibold text-gray-900 truncate">{{ $post->user->name }}</p>
+                                <p class="text-xs text-gray-500">{{ $post->published_at->format('M d, Y') }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                            <a href="{{ route('posts.show', $post) }}">
+                                {{ $post->title }}
+                            </a>
+                        </h3>
+
+                        <!-- Excerpt -->
+                        <p class="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+                            {{ $post->excerpt }}
+                        </p>
+
+                        <!-- Read More Link -->
+                        <a href="{{ route('posts.show', $post) }}" class="inline-flex items-center text-sm sm:text-base text-indigo-600 font-semibold hover:text-indigo-700 group-hover:gap-2 transition-all">
+                            Read more
+                            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+            @endforeach
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 sm:mt-12">
+            {{ $posts->links() }}
+        </div>
+    @else
+        <!-- Empty State -->
+        <div class="text-center py-12 sm:py-20 px-4">
+            <svg class="w-16 h-16 sm:w-24 sm:h-24 mx-auto text-gray-300 mb-4 sm:mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+            </svg>
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">No posts yet</h3>
+            <p class="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">Get started by creating your first blog post.</p>
+            @auth
+                <a href="{{ route('posts.create') }}" class="inline-flex items-center px-5 py-2.5 sm:px-6 sm:py-3 bg-indigo-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-indigo-700 transition-colors">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Create New Post
+                </a>
+            @endauth
+        </div>
+    @endif
+</div>
+
+<!-- Newsletter Section -->
+<div class="bg-gradient-to-br from-indigo-600 to-purple-600 py-12 sm:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">Stay Updated</h2>
+        <p class="text-sm sm:text-base text-indigo-100 mb-6 sm:mb-8 max-w-2xl mx-auto">Join our community and never miss a post. Get the latest stories delivered straight to your inbox.</p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md mx-auto">
+            <input type="email" placeholder="Enter your email" class="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-full flex-1 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+            <button class="px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base bg-white text-indigo-600 font-semibold rounded-full hover:bg-indigo-50 transition-colors whitespace-nowrap">Subscribe</button>
+        </div>
+    </div>
+</div>
+@endsection
